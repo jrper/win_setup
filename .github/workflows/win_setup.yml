@@ -1,0 +1,18 @@
+on: push
+name: main
+
+jobs:
+  main:
+    runs-on: windows-latest
+    steps:
+    - name: Setup WSL
+      uses: Vampire/setup-wsl@v1
+      with:
+        distribution: Ubuntu-20.04
+    - name: Update distro
+      run: |
+          wsl -l -v
+          wsl --status
+          wsl -- sudo apt update
+          wsl -- sudo apt upgrade;
+          wsl -- sudo apt install -y curl git imagemagick jq unzip vim zsh;
