@@ -1,0 +1,10 @@
+repos:
+-   repo: https://github.com/pycqa/flake8
+    rev: '4.0.1'  # current
+    hooks:
+    -   id: flake8
+-   repo: https://github.com/mwouts/jupytext
+    rev: v1.13.8  # CURRENT_TAG/COMMIT_HASH
+    hooks:
+    - id: jupytext
+      args: [--sync]

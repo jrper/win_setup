@@ -1,0 +1,46 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+    - name: Initialisation
+      uses: actions/checkout@v2
+
+    # Python version is part of environment.yml
+    - name: Create conda environment from environment.yml
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        environment-file: environment.yml
+
+    - name: Test Makefile targets
+      run: |
+        .github/build_pages.sh
+
+    # Deploy to local repo
+    - name: Deploy
+      uses: s0/git-publish-subdir-action@develop
+      env:
+        REPO: self
+        BRANCH: scripts
+        FOLDER: script
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        # Deploy to local repo
+    - name: Deploy
+      uses: s0/git-publish-subdir-action@develop
+      env:
+        REPO: self
+        BRANCH: html
+        FOLDER: html
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
